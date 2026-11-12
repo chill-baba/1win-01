@@ -65,7 +65,7 @@ export default function App() {
       const tabParam = params.get('tab');
       if (tabParam) return tabParam;
     }
-    return 'sports';
+    return 'home';
   });
   const [casinoSubTab, setCasinoSubTab] = useState('lobby'); // 'lobby' | 'live-casino' | 'quick-games'
   const [activeGame, setActiveGame] = useState(null); // { id, name, image, provider }
