@@ -21,6 +21,7 @@ import GameDetailModal from './components/GameDetailModal';
 import EventLoadingModal from './components/EventLoadingModal';
 import SupportModal from './components/SupportModal';
 import LanguageModal from './components/LanguageModal';
+import BannerLandingView from './components/BannerLandingView';
 
 // Section icons
 const OneWinIcon = (
@@ -49,6 +50,7 @@ export default function App() {
   const [prefillIdentifier, setPrefillIdentifier] = useState('');
 
   const [eventLoadingOpen, setEventLoadingOpen] = useState(false);
+  const [bannerLandingOpen, setBannerLandingOpen] = useState(false);
   const [supportModalOpen, setSupportModalOpen] = useState(false);
   const [langModalOpen, setLangModalOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState({
@@ -97,6 +99,13 @@ export default function App() {
 
   const openSupportModal = () => setSupportModalOpen(true);
   const closeSupportModal = () => setSupportModalOpen(false);
+
+  const handleBannerClick = () => {
+    setBannerLandingOpen(true);
+  };
+  const closeBannerLanding = () => {
+    setBannerLandingOpen(false);
+  };
 
   const openLangModal = () => setLangModalOpen(true);
   const closeLangModal = () => setLangModalOpen(false);
@@ -196,6 +205,7 @@ export default function App() {
               subTab={casinoSubTab}
               onSubTabChange={(st) => setCasinoSubTab(st)}
               onGameClick={handleGameClick}
+              onBannerClick={handleBannerClick}
             />
           ) : activeNavTab === 'free-money' ? (
             <FreeMoneyView
@@ -209,8 +219,8 @@ export default function App() {
             <>
               {/* Hero + Promo */}
               <div className="hero-promo-layout">
-                <HeroCarousel slides={APP_DATA.heroSlides} />
-                <PromoCards />
+                <HeroCarousel slides={APP_DATA.heroSlides} onBannerClick={handleBannerClick} />
+                <PromoCards onBannerClick={handleBannerClick} />
               </div>
 
               {/* Events */}
@@ -322,6 +332,14 @@ export default function App() {
         onClose={closeLangModal}
         currentLang={currentLang}
         onSelectLang={(lang) => setCurrentLang(lang)}
+      />
+
+      {/* Banner Landing Skeleton View */}
+      <BannerLandingView
+        isOpen={bannerLandingOpen}
+        onClose={closeBannerLanding}
+        onLoginClick={() => openLoginModal()}
+        onRegisterClick={openRegisterModal}
       />
     </div>
   );

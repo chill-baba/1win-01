@@ -58,6 +58,7 @@ export default function CasinoView({
   subTab = 'lobby',
   onSubTabChange,
   onGameClick,
+  onBannerClick,
 }) {
   const currentTab = subTab || 'lobby';
   const tabData = CASINO_DATA[currentTab] || CASINO_DATA.lobby;
@@ -209,7 +210,12 @@ export default function CasinoView({
                 }}
               >
                 {tabData.banners.map((banner) => (
-                  <div key={banner.id} className="casino-banner-slide">
+                  <div
+                    key={banner.id}
+                    className="casino-banner-slide"
+                    onClick={() => onBannerClick && onBannerClick(banner)}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <img
                       src={banner.image}
                       alt={banner.title || 'Casino Banner'}

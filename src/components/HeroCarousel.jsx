@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-export default function HeroCarousel({ slides }) {
+export default function HeroCarousel({ slides, onBannerClick }) {
   const [current, setCurrent] = useState(0);
   const intervalRef = useRef(null);
   const trackRef = useRef(null);
@@ -58,6 +58,10 @@ export default function HeroCarousel({ slides }) {
               href="#"
               className="carousel-slide"
               style={slide.bgGradient ? { background: slide.bgGradient } : {}}
+              onClick={(e) => {
+                e.preventDefault();
+                if (onBannerClick) onBannerClick(slide);
+              }}
             >
               {slide.bgImage && (
                 <img
@@ -72,7 +76,18 @@ export default function HeroCarousel({ slides }) {
                 <div className="carousel-slide-content">
                   {slide.title && <h2 className="carousel-slide-title">{slide.title}</h2>}
                   {slide.subtitle && <p className="carousel-slide-subtitle">{slide.subtitle}</p>}
-                  {slide.ctaText && <button className="carousel-slide-cta">{slide.ctaText}</button>}
+                  {slide.ctaText && (
+                    <button
+                      className="carousel-slide-cta"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (onBannerClick) onBannerClick(slide);
+                      }}
+                    >
+                      {slide.ctaText}
+                    </button>
+                  )}
                 </div>
               )}
             </a>
