@@ -1,0 +1,886 @@
+/* Free Money Page Styles - 1win Authentic Design */
+
+.freemoney-container {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 12px 16px 40px 16px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .freemoney-container {
+    padding: 20px 24px 60px 24px;
+  }
+}
+
+/* Page Title */
+.freemoney-header {
+  margin-bottom: 16px;
+}
+
+.freemoney-title {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .freemoney-title {
+    font-size: 32px;
+  }
+}
+
+/* Navigation Chips / Tabs */
+.freemoney-chips-wrapper {
+  position: sticky;
+  top: 56px;
+  z-index: 20;
+  margin: 0 -16px 20px -16px;
+  padding: 6px 16px;
+  background: rgba(14, 18, 27, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@media (min-width: 768px) {
+  .freemoney-chips-wrapper {
+    top: 64px;
+    margin: 0 0 24px 0;
+    padding: 8px 0;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: none;
+    position: static;
+  }
+}
+
+.freemoney-chips-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+
+.freemoney-chips-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.freemoney-chip {
+  flex-shrink: 0;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 9999px;
+  background: #1e2430;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #9ea6b3;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.freemoney-chip:hover {
+  background: #252c3b;
+  color: #ffffff;
+}
+
+.freemoney-chip.active {
+  background: #007aff;
+  border-color: #007aff;
+  color: #ffffff;
+  box-shadow: 0 3px 12px rgba(0, 122, 255, 0.4);
+}
+
+.freemoney-chip-logo-text {
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+/* Blocks Grid Layout */
+.freemoney-blocks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .freemoney-blocks-list {
+    gap: 20px;
+  }
+}
+
+/* CARD 1: Fortune Wheel */
+.fm-wheel-card {
+  position: relative;
+  background: radial-gradient(circle at 50% 25%, #242c38 0%, #171b23 60%, #11141a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 24px 18px 20px 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  scroll-margin-top: 110px;
+}
+
+@media (min-width: 768px) {
+  .fm-wheel-card {
+    padding: 32px 28px 24px 28px;
+  }
+}
+
+.fm-wheel-info-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.fm-wheel-info-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.05);
+}
+
+.fm-wheel-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.fm-wheel-logo-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.fm-wheel-1win-text {
+  font-size: 26px;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.fm-wheel-badge-text {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #ffffff;
+  margin-top: 2px;
+}
+
+.fm-wheel-subtitle {
+  font-size: 13.5px;
+  color: #9fa7b4;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Wheel Canvas / Graphic Container */
+.fm-wheel-stage {
+  position: relative;
+  width: 100%;
+  max-width: 330px;
+  height: 330px;
+  margin: 10px auto 18px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .fm-wheel-stage {
+    max-width: 360px;
+    height: 360px;
+  }
+}
+
+/* Background Rays Glow */
+.fm-wheel-rays {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 200, 60, 0.18) 0%, rgba(0, 122, 255, 0.1) 45%, transparent 70%);
+  pointer-events: none;
+  animation: fmWheelPulse 4s infinite ease-in-out;
+}
+
+@keyframes fmWheelPulse {
+  0%, 100% { transform: scale(0.96); opacity: 0.7; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+/* Static Pointer Needle */
+.fm-wheel-pointer-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 10;
+  filter: drop-shadow(-2px 2px 6px rgba(0, 0, 0, 0.7));
+}
+
+/* Disc Rotator */
+.fm-wheel-disc-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fm-wheel-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.6));
+  user-select: none;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Spin Button */
+.fm-spin-btn {
+  width: 100%;
+  height: 48px;
+  background: #ffffff;
+  color: #11141a;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fm-spin-btn:hover:not(:disabled) {
+  background: #f1f4f9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+}
+
+.fm-spin-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.fm-spin-btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+/* CARD 2: Lucky Drive Promotion Countdown */
+.fm-lucky-next-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 195px;
+  background: linear-gradient(135deg, #a78866 0%, #7d6348 50%, #463728 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  scroll-margin-top: 110px;
+}
+
+@media (min-width: 768px) {
+  .fm-lucky-next-card {
+    min-height: 220px;
+    padding: 24px 28px;
+  }
+}
+
+.fm-lucky-next-bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+
+.fm-lucky-next-car-title-img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.fm-lucky-next-timer-row {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  margin-top: 120px;
+}
+
+@media (min-width: 768px) {
+  .fm-lucky-next-timer-row {
+    margin-top: 135px;
+    font-size: 13.5px;
+  }
+}
+
+.fm-timer-badge {
+  background: rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  min-width: 22px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.fm-timer-colon {
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* CARD 3: Lucky Drive Monthly Car Draw (Lamborghini) */
+.fm-lucky-main-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(160deg, #1d61e4 0%, #1142a5 50%, #0c2d73 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 20px 16px 18px 16px;
+  box-shadow: 0 8px 30px rgba(17, 66, 165, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .fm-lucky-main-card {
+    padding: 28px 24px;
+  }
+}
+
+.fm-lucky-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 9999px;
+  padding: 4px 10px;
+  width: fit-content;
+  margin-bottom: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fm-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff5e3a;
+  box-shadow: 0 0 8px #ff5e3a;
+  animation: fmLivePulse 1.8s infinite;
+}
+
+@keyframes fmLivePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.fm-live-text {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.fm-lucky-title-sub {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #9ec5fe;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.fm-lucky-title-main {
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.3px;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0 0 14px 0;
+}
+
+@media (min-width: 768px) {
+  .fm-lucky-title-main {
+    font-size: 24px;
+  }
+}
+
+.fm-lucky-cars-img-wrap {
+  width: 100%;
+  margin: 4px 0 16px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.fm-lucky-cars-img {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.4));
+}
+
+.fm-lucky-tickets-row {
+  margin-bottom: 16px;
+}
+
+.fm-tickets-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #c9dcff;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fm-tickets-scroll {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 4px 0;
+}
+
+.fm-tickets-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.fm-ticket-item {
+  flex-shrink: 0;
+  width: 28px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  position: relative;
+}
+
+.fm-ticket-item.active {
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  color: #0c2d73;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.fm-ticket-badge-today {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 10px;
+  height: 10px;
+  background: #ff3b30;
+  border-radius: 50%;
+  border: 1.5px solid #ffffff;
+}
+
+.fm-lucky-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.fm-btn-participate {
+  flex: 1;
+  height: 44px;
+  background: #ffffff;
+  color: #0c2d73;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fm-btn-participate:hover {
+  background: #edf3ff;
+  transform: translateY(-1px);
+}
+
+.fm-btn-winners {
+  height: 44px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fm-btn-winners:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* GENERIC 2-COLUMN PROMO CARD (Token, Email, Phone, App, etc.) */
+.fm-card-banner {
+  position: relative;
+  border-radius: 18px;
+  padding: 20px 18px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 140px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  scroll-margin-top: 110px;
+}
+
+@media (min-width: 768px) {
+  .fm-card-banner {
+    padding: 24px 28px;
+    min-height: 160px;
+  }
+}
+
+.fm-card-content {
+  position: relative;
+  z-index: 5;
+  max-width: 58%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (min-width: 768px) {
+  .fm-card-content {
+    max-width: 65%;
+  }
+}
+
+.fm-card-title {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #ffffff;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .fm-card-title {
+    font-size: 18px;
+  }
+}
+
+.fm-card-desc {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.fm-card-btn {
+  height: 38px;
+  padding: 0 20px;
+  width: fit-content;
+  background: #ffffff;
+  color: #11141a;
+  border: none;
+  border-radius: 9999px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.fm-card-btn:hover {
+  background: #f0f3f8;
+  transform: translateY(-1px);
+}
+
+.fm-card-btn:active {
+  transform: translateY(1px);
+}
+
+.fm-card-artwork {
+  position: absolute;
+  right: 12px;
+  bottom: 0;
+  height: 100%;
+  max-width: 42%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.fm-card-artwork img {
+  max-height: 125px;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+}
+
+@media (min-width: 768px) {
+  .fm-card-artwork img {
+    max-height: 145px;
+  }
+}
+
+/* Individual Card Theming */
+.fm-card-token {
+  background: radial-gradient(circle at 80% 50%, #1f4258 0%, #132433 60%, #0d1722 100%);
+}
+
+.fm-card-email {
+  background: linear-gradient(135deg, #1b384d 0%, #152636 60%, #101c27 100%);
+}
+
+.fm-card-phone {
+  background: linear-gradient(135deg, #2b3042 0%, #1c212e 60%, #131720 100%);
+}
+
+.fm-card-sports {
+  background: linear-gradient(135deg, #2a203a 0%, #1b172a 60%, #120e1e 100%);
+}
+
+.fm-card-pwa {
+  background: linear-gradient(135deg, #1b3b3a 0%, #132828 60%, #0d1c1c 100%);
+}
+
+.fm-card-push {
+  background: linear-gradient(135deg, #2b2938 0%, #1c1a26 60%, #13121b 100%);
+}
+
+.fm-card-loyalty {
+  background: linear-gradient(135deg, #382c23 0%, #241c16 60%, #18130e 100%);
+}
+
+.fm-card-cashback {
+  background: linear-gradient(117deg, #282d35 -2%, #3c4554 48%, #1c212a 98%);
+}
+
+.fm-card-vouchers {
+  background: linear-gradient(135deg, #203548 0%, #172432 60%, #0f1822 100%);
+}
+
+.fm-card-blog {
+  background: radial-gradient(116% 116% at 100% 100%, #357b75 0%, #10384a 100%);
+}
+
+/* Social Buttons Row (Vouchers / Blog) */
+.fm-socials-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.fm-social-btn {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.fm-social-btn:hover {
+  background: rgba(255, 255, 255, 0.24);
+  transform: translateY(-1px);
+}
+
+/* Modals */
+.fm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fmFadeIn 0.2s ease;
+}
+
+@keyframes fmFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fm-modal-card {
+  position: relative;
+  background: #171d28;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 380px;
+  padding: 28px 24px 24px 24px;
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  animation: fmZoomIn 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+@keyframes fmZoomIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.fm-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.fm-modal-prize-icon {
+  font-size: 54px;
+  margin-bottom: 12px;
+  animation: fmBounce 1.5s infinite ease-in-out;
+}
+
+@keyframes fmBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.fm-modal-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.fm-modal-prize-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffb703;
+  margin: 0 0 12px 0;
+}
+
+.fm-modal-desc {
+  font-size: 13.5px;
+  color: #9fa7b4;
+  margin: 0 0 20px 0;
+  line-height: 1.4;
+}
+
+.fm-modal-btn-claim {
+  width: 100%;
+  height: 46px;
+  background: #1bb85a;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(27, 184, 90, 0.4);
+}
+
+.fm-modal-btn-claim:hover {
+  background: #20cf67;
+  transform: translateY(-1px);
+}

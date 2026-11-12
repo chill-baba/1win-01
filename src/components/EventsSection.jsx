@@ -1,7 +1,45 @@
-export default function EventsSection({ events }) {
-  const scrollRef = (dir) => {
-    const container = document.getElementById('events-scroll');
-    if (container) container.scrollBy({ left: dir === 'right' ? 320 : -320, behavior: 'smooth' });
+import { useState, useRef, useEffect, useCallback } from 'react';
+
+export default function EventsSection({ events, onEventClick }) {
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 6);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 6);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    checkScroll();
+    el.addEventListener('scroll', checkScroll, { passive: true });
+    window.addEventListener('resize', checkScroll);
+    return () => {
+      el.removeEventListener('scroll', checkScroll);
+      window.removeEventListener('resize', checkScroll);
+    };
+  }, [checkScroll, events]);
+
+  const handleScroll = (dir) => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const firstItem = el.firstElementChild;
+    const itemWidth = firstItem ? firstItem.getBoundingClientRect().width : 300;
+    const gap = 12;
+    const stride = itemWidth + gap;
+
+    const visibleCount = Math.max(1, Math.round(el.clientWidth / stride));
+    const scrollAmount = visibleCount * stride;
+
+    el.scrollBy({
+      left: dir === 'right' ? scrollAmount : -scrollAmount,
+      behavior: 'smooth',
+    });
   };
 
   return (
@@ -14,16 +52,22 @@ export default function EventsSection({ events }) {
           <h2 className="section-header-title">TOP Events</h2>
         </div>
         <div className="section-header-right">
-          <button className="btn-all">All <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
-          <div className="scroll-arrows">
-            <button className="scroll-arrow" onClick={() => scrollRef('left')} aria-label="Scroll left"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
-            <button className="scroll-arrow" onClick={() => scrollRef('right')} aria-label="Scroll right"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
-          </div>
+          <button className="btn-all" onClick={() => onEventClick && onEventClick()} aria-label="All events">
+            All{' '}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
+          </button>
         </div>
       </div>
-      <div className="events-scroll" id="events-scroll">
+      <div className="events-scroll" ref={scrollRef} id="events-scroll">
         {events.map((event) => (
-          <div className="event-card" key={event.id}>
+          <div
+            className="event-card"
+            key={event.id}
+            onClick={() => onEventClick && onEventClick(event)}
+            style={{ cursor: 'pointer' }}
+          >
             <div className="event-card-header">
               <span className="event-card-league-icon">{event.leagueIcon}</span>
               <div>

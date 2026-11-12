@@ -1,7 +1,14 @@
-export default function MobileHeader({ onLoginClick, onRegisterClick }) {
+export default function MobileHeader({ onLoginClick, onRegisterClick, onLogoClick }) {
   return (
     <header className="mobile-header" id="mobile-header">
-      <a href="#" className="header-logo">
+      <a
+        href="#"
+        className="header-logo"
+        onClick={(e) => {
+          e.preventDefault();
+          if (onLogoClick) onLogoClick();
+        }}
+      >
         <img src="/Assites/a Logo-top-bg-removebg-preview.png" alt="1win" width="80" height="32" />
       </a>
       <div className="header-actions">

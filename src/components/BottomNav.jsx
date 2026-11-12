@@ -1,23 +1,57 @@
-export default function BottomNav() {
+export default function BottomNav({ activeTab = 'home', onTabChange }) {
+  const handleClick = (e, page) => {
+    e.preventDefault();
+    if (onTabChange) {
+      onTabChange(page);
+    }
+  };
+
   return (
     <nav className="bottom-nav" id="bottom-nav">
-      <a href="#" className="bottom-nav-item" data-page="menu">
+      <a
+        href="#"
+        className={`bottom-nav-item${activeTab === 'menu' ? ' bottom-nav-item--active' : ''}`}
+        data-page="menu"
+        onClick={(e) => handleClick(e, 'menu')}
+      >
         <svg className="bottom-nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
         <span className="bottom-nav-label">Menu</span>
       </a>
-      <a href="#" className="bottom-nav-item bottom-nav-item--active" data-page="home">
+      <a
+        href="#"
+        className={`bottom-nav-item${activeTab === 'home' ? ' bottom-nav-item--active' : ''}`}
+        data-page="home"
+        onClick={(e) => handleClick(e, 'home')}
+      >
         <svg className="bottom-nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
         <span className="bottom-nav-label">Home</span>
       </a>
-      <a href="#" className="bottom-nav-item" data-page="casino">
-        <svg className="bottom-nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      <a
+        href="#"
+        className={`bottom-nav-item${activeTab === 'casino' ? ' bottom-nav-item--active' : ''}`}
+        data-page="casino"
+        onClick={(e) => handleClick(e, 'casino')}
+      >
+        <svg className="bottom-nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 2c1.856 0 3.56.634 4.912 1.696l-1.42 2.458A5.965 5.965 0 0 0 12 7c-1.312 0-2.51.422-3.492 1.154L7.088 5.696A7.962 7.962 0 0 1 12 4zm6.304 3.088l-2.458 1.42A5.965 5.965 0 0 1 17 12c0 1.312-.422 2.51-1.154 3.492l2.458 1.42A7.962 7.962 0 0 0 20 12c0-1.856-.634-3.56-1.696-4.912zm-.608 11.216l-2.458-1.42A5.965 5.965 0 0 1 12 17c-1.312 0-2.51-.422-3.492-1.154l-1.42 2.458A7.962 7.962 0 0 0 12 20c1.856 0 3.56-.634 4.912-1.696zM5.696 16.912l2.458-1.42A5.965 5.965 0 0 1 7 12c0-1.312.422-2.51 1.154-3.492L5.696 7.088A7.962 7.962 0 0 0 4 12c0 1.856.634 3.56 1.696 4.912zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
+        </svg>
         <span className="bottom-nav-label">Casino</span>
       </a>
-      <a href="#" className="bottom-nav-item" data-page="free-game">
-        <img className="bottom-nav-icon" src="/Assites/bnev/obngift.png" alt="Free game" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
-        <span className="bottom-nav-label">Free game</span>
+      <a
+        href="#"
+        className={`bottom-nav-item${activeTab === 'free-money' || activeTab === 'free-game' ? ' bottom-nav-item--active' : ''}`}
+        data-page="free-money"
+        onClick={(e) => handleClick(e, 'free-money')}
+      >
+        <img className="bottom-nav-icon" src="/Assites/bnev/obngift.png" alt="Free money" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
+        <span className="bottom-nav-label">Free money</span>
       </a>
-      <a href="#" className="bottom-nav-item" data-page="sports">
+      <a
+        href="#"
+        className={`bottom-nav-item${activeTab === 'sports' ? ' bottom-nav-item--active' : ''}`}
+        data-page="sports"
+        onClick={(e) => handleClick(e, 'sports')}
+      >
         <svg className="bottom-nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g clipPath="url(#clip0_755_9728)">
             <g clipPath="url(#clip1_755_9728)">

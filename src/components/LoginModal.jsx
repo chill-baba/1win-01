@@ -84,7 +84,7 @@ function PasswordInput({ id, value, onChange, error, placeholder, onClearError }
 
 // ---------- Main Modal ----------
 
-export default function LoginModal({ isOpen, onClose }) {
+export default function LoginModal({ isOpen, onClose, onRegisterClick, initialIdentifier = '' }) {
   const [activeTab, setActiveTab] = useState('email');
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -101,6 +101,19 @@ export default function LoginModal({ isOpen, onClose }) {
   const [emailPwd, setEmailPwd] = useState('');
   const [emailErr, setEmailErr] = useState('');
   const [emailPwdErr, setEmailPwdErr] = useState('');
+
+  // Pre-fill identifier if provided
+  useEffect(() => {
+    if (isOpen && initialIdentifier) {
+      if (initialIdentifier.includes('@')) {
+        setEmail(initialIdentifier);
+        setActiveTab('email');
+      } else {
+        setPhone(initialIdentifier);
+        setActiveTab('phone');
+      }
+    }
+  }, [isOpen, initialIdentifier]);
 
   // Keyboard close
   useEffect(() => {
@@ -400,7 +413,18 @@ export default function LoginModal({ isOpen, onClose }) {
 
             {/* Register Link */}
             <div className="modal-register-link">
-              <p>Don't have an account?<br /><a href="#">Register</a></p>
+              <p>Don't have an account?<br />
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleClose();
+                    if (onRegisterClick) onRegisterClick();
+                  }}
+                >
+                  Register
+                </a>
+              </p>
             </div>
           </div>
         )}

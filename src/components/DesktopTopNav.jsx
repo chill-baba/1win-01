@@ -39,12 +39,21 @@ const tabs = [
   },
 ];
 
-export default function DesktopTopNav({ onLoginClick, onRegisterClick }) {
-  const [activeTab, setActiveTab] = useState('home');
+export default function DesktopTopNav({
+  activeTab = 'home',
+  onTabChange,
+  onLoginClick,
+  onRegisterClick,
+}) {
+  const handleTabClick = (tabId) => {
+    if (onTabChange) {
+      onTabChange(tabId);
+    }
+  };
 
   return (
     <nav className="desktop-topnav" id="desktop-topnav">
-      <a href="#" className="topnav-logo">
+      <a href="#" className="topnav-logo" onClick={(e) => { e.preventDefault(); handleTabClick('home'); }}>
         <img src="/Assites/full-v2.png" alt="1win" width="120" height="36" />
       </a>
       <div className="topnav-tabs">
@@ -53,7 +62,7 @@ export default function DesktopTopNav({ onLoginClick, onRegisterClick }) {
             key={tab.id}
             className={`topnav-tab${activeTab === tab.id ? ' topnav-tab--active' : ''}`}
             data-page={tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => handleTabClick(tab.id)}
           >
             {tab.icon}
             {tab.label}
