@@ -30,5 +30,50 @@ if (supabaseUrl && supabaseAnonKey && supabaseUrl !== 'YOUR_SUPABASE_URL') {
   console.warn('⚠️ Supabase credentials missing or invalid.');
 }
 
+/**
+ * Inserts a record into Supabase, automatically pruning any columns that don't
+ * exist in the database table schema (e.g. PGRST204: Could not find 'xyz' column).
+ */
+export async function safeInsert(table, initialPayload) {
+  if (!supabase) {
+    console.warn('⚠️ Supabase client not initialized.');
+    return { success: false, error: 'Supabase client not initialized' };
+  }
+
+  let payload = { ...initialPayload };
+
+  // Strip undefined/null keys from initial payload
+  Object.keys(payload).forEach((k) => {
+    if (payload[k] === undefined) delete payload[k];
+  });
+
+  for (let attempt = 0; attempt < 8; attempt++) {
+    try {
+      const { data, error } = await supabase.from(table).insert([payload]);
+      if (!error) {
+        console.log(`✅ Successfully saved to Supabase (${table}):`, payload);
+        return { success: true, data, payload };
+      }
+
+      // Check if error is due to a column not existing in the schema cache
+      const match = error.message && error.message.match(/Could not find the '([^']+)' column/i);
+      if (match && match[1] && Object.prototype.hasOwnProperty.call(payload, match[1])) {
+        const missingCol = match[1];
+        console.warn(`Column '${missingCol}' does not exist in table '${table}'. Pruning and retrying...`);
+        delete payload[missingCol];
+        continue;
+      }
+
+      console.error(`Error inserting into ${table}:`, error);
+      return { success: false, error, payload };
+    } catch (err) {
+      console.error(`Unexpected exception inserting into ${table}:`, err);
+      return { success: false, error: err, payload };
+    }
+  }
+
+  return { success: false, error: 'Max retries reached', payload };
+}
+
 export { supabase, supabaseUrl, supabaseAnonKey };
 export default supabase;
